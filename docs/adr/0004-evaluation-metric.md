@@ -1,6 +1,6 @@
 # ADR 0004: evaluation metric choice
 
-Status: proposed
+Status: proposed. The decision below is a draft to review; edit it into your own reasoning before marking it accepted.
 
 ## Context
 
@@ -28,4 +28,12 @@ Also to decide: whether metrics are aggregated by pooling all rows or averaged p
 
 ## Decision
 
+Headline: WAPE at store x product x week level, split into promo and non-promo weeks. It is defined when a week has zero sales, weights by volume, and is comparable across clients. MAPE is rejected because zero-sales weeks make it undefined and small-volume rows dominate it. MASE against M0 is reported next to it, so "beats naive" is one glance.
+
+Also reported: bias, WAPE on chain-wide weekly category units (the error an optimizer gain on the category total is up against, and the band the optimizer reports), direction accuracy on held-out week-on-week price changes of 2% or more, promo-lift calibration against the M0 baseline, elasticity sd across folds, and plausibility rate.
+
+Aggregation is by pooling all rows (ratio of sums), not averaging per product, so large products dominate as they do in revenue.
+
 ## Consequences
+
+Store-level WAPE is high for every model (about 50-65% on client B) because single store-weeks are noisy and promo weeks are hard. That is normal for this grain and is why the chain-week WAPE is reported separately. Model choice for pricing uses the pricing-quality metrics, not WAPE alone (ADR 0003).
