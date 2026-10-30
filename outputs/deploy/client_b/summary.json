@@ -1,0 +1,14 @@
+{
+ "client_id": "client_b",
+ "display_name": "Dominick's Finer Foods (cereal)",
+ "first_week": "1993-05-13",
+ "last_week": "1997-05-01",
+ "stores": 93,
+ "products": 28,
+ "weeks": 175,
+ "rows": 404447,
+ "zero_sales_share": 0.0056373270168897285,
+ "outlier_share": 0.01297821469809394,
+ "has_feature": true,
+ "has_display": true
+}

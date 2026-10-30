@@ -2,16 +2,16 @@
 
 Shelf Simulator takes a retailer's weekly scanner data, maps it into one canonical schema, and answers pricing questions on top of that schema: how sensitive each product is to price, where volume goes when a price moves, and which price or promo plan earns the most.
 
-The one rule that shapes everything: client-specific code stops at the canonical tables. A client is a YAML file in `configs/clients/` plus, if its raw format is new, a small adapter in `src/shelfsim/onboarding/adapters/`. Nothing after onboarding knows which client it's looking at.
+The one rule that shapes everything: client-specific code stops at the canonical tables. A client is a YAML file in `configs/clients/`. Nothing after onboarding knows which client it's looking at.
 
 ## Data flow
 
 ```mermaid
 flowchart TD
-    rawA[client A raw files] --> adA[adapter client_a]
-    rawB[client B raw files] --> adB[adapter client_b]
-    cfg[configs/clients/*.yaml] --> adA & adB
-    adA & adB --> steps[common onboarding steps]
+    rawA[client A raw files: Excel] --> read[adapter: csv / excel / stata reader]
+    rawB[client B raw files: CSV + Stata] --> read
+    cfg[configs/clients/*.yaml] --> read
+    read --> steps[common onboarding steps]
     steps --> val{pandera schemas}
     val --> canon[(canonical tables: sales, products, stores<br/>DuckDB + Parquet)]
     steps --> dq[data_quality.html]
@@ -39,7 +39,9 @@ flowchart TD
 
 ### Onboarding (`shelfsim.onboarding`)
 
-An adapter reads one raw format and renames columns to canonical names. That's all it does. It doesn't fix units, fill gaps or derive prices, because if two adapters each did that, the two clients would be cleaned differently and their elasticities wouldn't be comparable.
+The adapter (`onboarding/adapters/__init__.py`) reads one raw file with a csv, excel or stata reader and renames its columns to the names the steps expect. Which file, reader, sheet and columns all come from the YAML, so the spec's planned `client_a.py` and `client_b.py` turned out unnecessary: both clients, and the fake third client in the tests, use the same three readers. The adapter doesn't fix units, fill gaps or derive prices, because if each client's adapter did that, the two clients would be cleaned differently and their elasticities wouldn't be comparable.
+
+Client quirks that need logic are SQL expressions in the YAML, evaluated by the common steps: row filters (`ok = 1`), promo codes (`sale IN ('B', 'C', 'S')`), the private-label rule and the cost formula. Manufacturer from a UPC prefix, store segments from a lookup and size overrides are YAML maps.
 
 The shared steps in `steps.py` run in a fixed order for every client:
 
@@ -51,7 +53,7 @@ The shared steps in `steps.py` run in a fixed order for every client:
 6. Outliers: flag, never delete.
 7. Validate against `schema.py`, then write DuckDB and Parquet.
 
-`quality.py` records row counts after each step and writes `outputs/<client>/data_quality.html`. That report is what goes back to the client with open questions in week one.
+`quality.py` records row counts after each step and writes `outputs/<client>/data_quality.html`. That report is what goes back to the client with open questions in week one. `docs/datasets.md` has what the raw files turned out to contain.
 
 ### Canonical schema (`shelfsim.schema`)
 
@@ -59,7 +61,7 @@ Three tables, defined as pandera schemas. Nothing is written without passing the
 
 | Table | Grain | Holds |
 |---|---|---|
-| sales | client x store x product x week | units, revenue, actual and regular price, promo flags, discount depth, unit cost if known |
+| sales | client x store x product x week | units, revenue, actual and regular price, promo flags, discount depth, unit cost, row status, outlier flag |
 | products | client x product | name, brand, manufacturer, category, size in ounces, private label flag |
 | stores | client x store | segment, region, any demographic columns the client has |
 
@@ -83,7 +85,7 @@ Every model implements the interface in `base.py`: `fit(train) -> model` and `pr
 
 ### Choice model and simulator (`shelfsim.choice`)
 
-Each store-week is a market with an outside option. The plain logit and nested logit are fitted with the Berry inversion. The simulator draws virtual shoppers per store cluster with their own price sensitivity and aggregates their choices, which is how a scenario turns into units, revenue, margin and "where the volume went".
+Each store-week is a market with an outside option; market size is in ADR 0006. The plain logit and nested logit are fitted with the Berry inversion. The simulator draws virtual shoppers per store cluster with their own price sensitivity and aggregates their choices, which is how a scenario turns into units, revenue, margin and "where the volume went".
 
 ### Evaluation (`shelfsim.evaluation`)
 
@@ -96,6 +98,19 @@ The optimizer searches prices with the simulator as its objective, under the con
 ### Outputs
 
 `outputs/<client>/` holds everything a run produces. `outputs/deploy/` holds the aggregates and model outputs the Streamlit app reads, and never raw rows, because neither dataset may be redistributed.
+
+## Running it
+
+`python -m shelfsim <step> --client <client>` runs one step; the Makefile wraps it. Steps run in this order, each reading the previous one's outputs:
+
+| make target | Writes to outputs/<client>/ |
+|---|---|
+| onboard | data_quality.html (and the canonical tables in data/) |
+| cluster | product_clusters.csv, store_clusters.csv, silhouette_*.csv, clusters.html |
+| model | elasticities.csv, cross_elasticities.csv |
+| backtest | backtest.csv, backtest_summary.csv, backtest.md, and outputs/model_comparison.md |
+| simulate | choice_models.json, logit_elasticities.csv, simulator.json, promo_plan.csv, optimizer.json |
+| report | findings.html, and outputs/deploy/<client>/ |
 
 ## Config
 

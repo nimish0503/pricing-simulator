@@ -1,0 +1,464 @@
+{
+ "revenue": {
+  "status": "optimal",
+  "method": "grid search",
+  "current_weekly_value": 256246.284428032,
+  "optimized_weekly_value": 272133.99058661493,
+  "weekly_gain": 15887.706158582936,
+  "gain_pct": 0.062001703533168986,
+  "current_weekly_units": 76914.8628502052,
+  "optimized_weekly_units": 88916.58528061924,
+  "wape": 0.2977370834370108,
+  "error_band_weekly": 81024.38066133368,
+  "binding": [
+   "WHOLE GRAIN TOTAL 12 oz at the bottom of its band (3.09)",
+   "CHEERIOS 10 oz at the bottom of its band (2.29)",
+   "HONEY NUT CHEERIOS 14 oz at the bottom of its band (2.99)",
+   "CHEERIOS 15 oz at the bottom of its band (3.09)",
+   "CHEERIOS 20 oz at the bottom of its band (3.89)",
+   "GOLDEN GRAHAMS 18 oz at the bottom of its band (3.69)",
+   "COCOA PUFFS 13.8 oz at the bottom of its band (2.69)",
+   "LUCKY CHARMS 14 oz at the bottom of its band (3.49)",
+   "CAPN CRUNCH CEREAL 16 oz at the bottom of its band (2.89)",
+   "KELLOGGS CORN FLAKES 18 oz at the bottom of its band (2.59)",
+   "KELLOGG'S RAISIN BRA 20 oz at the bottom of its band (2.79)",
+   "KELLOGGS RAISIN BRAN 25.5 oz at the bottom of its band (3.09)",
+   "KELLOGGS CORN POPS 15 oz at the bottom of its band (2.99)",
+   "KELLOGG'S FROSTED FL 15 oz at the bottom of its band (2.69)",
+   "KELLOGG'S FROSTED FL 20 oz at the bottom of its band (3.19)",
+   "KELLOGG'S FROSTED FL 25 oz at the bottom of its band (3.59)",
+   "KELLOGGS SPECIAL K 12 oz at the bottom of its band (3.09)",
+   "KELLOGGS SPECIAL K 18 oz at the bottom of its band (4.19)",
+   "KELLOGGS FRUIT LOOPS 15 oz at the bottom of its band (2.79)",
+   "KELLOGGS APPLE JACKS 15 oz at the bottom of its band (3.09)",
+   "KELLOGG'S CRISPIX 12 oz at the bottom of its band (2.89)",
+   "BITE SIZE FRSTD MINI 19 oz at the bottom of its band (2.99)",
+   "KELL FROST MINI WHTS 24 oz at the bottom of its band (3.49)",
+   "KELLOGGS RICE KRISPI 15 oz at the bottom of its band (3.19)",
+   "DOM FROSTED FLAKES 20 oz at the bottom of its band (2.89)",
+   "DOM RAISIN BRAN 25.5 oz at the bottom of its band (2.89)",
+   "DOM CORN FLAKES 18 oz at the bottom of its band (2.09)",
+   "POST GRAPE-NUTS CERE 24 oz at the bottom of its band (2.79)"
+  ],
+  "broken_today": [],
+  "prices": [
+   {
+    "product_id": "1600065850",
+    "name": "WHOLE GRAIN TOTAL",
+    "size_oz": 12.0,
+    "current": 3.33,
+    "recommended": 3.09
+   },
+   {
+    "product_id": "1600066510",
+    "name": "CHEERIOS",
+    "size_oz": 10.0,
+    "current": 2.49,
+    "recommended": 2.29
+   },
+   {
+    "product_id": "1600066590",
+    "name": "HONEY NUT CHEERIOS",
+    "size_oz": 14.0,
+    "current": 3.25,
+    "recommended": 2.99
+   },
+   {
+    "product_id": "1600066610",
+    "name": "CHEERIOS",
+    "size_oz": 15.0,
+    "current": 3.35,
+    "recommended": 3.09
+   },
+   {
+    "product_id": "1600066660",
+    "name": "CHEERIOS",
+    "size_oz": 20.0,
+    "current": 4.25,
+    "recommended": 3.89
+   },
+   {
+    "product_id": "1600067970",
+    "name": "GOLDEN GRAHAMS",
+    "size_oz": 18.0,
+    "current": 3.99,
+    "recommended": 3.69
+   },
+   {
+    "product_id": "1600068260",
+    "name": "COCOA PUFFS",
+    "size_oz": 13.8,
+    "current": 2.98,
+    "recommended": 2.69
+   },
+   {
+    "product_id": "1600068870",
+    "name": "LUCKY CHARMS",
+    "size_oz": 14.0,
+    "current": 3.79,
+    "recommended": 3.49
+   },
+   {
+    "product_id": "3000006610",
+    "name": "CAPN CRUNCH CEREAL",
+    "size_oz": 16.0,
+    "current": 3.19,
+    "recommended": 2.89
+   },
+   {
+    "product_id": "3800000120",
+    "name": "KELLOGGS CORN FLAKES",
+    "size_oz": 18.0,
+    "current": 2.85,
+    "recommended": 2.59
+   },
+   {
+    "product_id": "3800000820",
+    "name": "KELLOGG'S RAISIN BRA",
+    "size_oz": 20.0,
+    "current": 2.99,
+    "recommended": 2.79
+   },
+   {
+    "product_id": "3800000828",
+    "name": "KELLOGGS RAISIN BRAN",
+    "size_oz": 25.5,
+    "current": 3.39,
+    "recommended": 3.09
+   },
+   {
+    "product_id": "3800001011",
+    "name": "KELLOGGS CORN POPS",
+    "size_oz": 15.0,
+    "current": 3.28,
+    "recommended": 2.99
+   },
+   {
+    "product_id": "3800001510",
+    "name": "KELLOGG'S FROSTED FL",
+    "size_oz": 15.0,
+    "current": 2.98,
+    "recommended": 2.69
+   },
+   {
+    "product_id": "3800001520",
+    "name": "KELLOGG'S FROSTED FL",
+    "size_oz": 20.0,
+    "current": 3.49,
+    "recommended": 3.19
+   },
+   {
+    "product_id": "3800001527",
+    "name": "KELLOGG'S FROSTED FL",
+    "size_oz": 25.0,
+    "current": 3.98,
+    "recommended": 3.59
+   },
+   {
+    "product_id": "3800001611",
+    "name": "KELLOGGS SPECIAL K",
+    "size_oz": 12.0,
+    "current": 3.35,
+    "recommended": 3.09
+   },
+   {
+    "product_id": "3800001621",
+    "name": "KELLOGGS SPECIAL K",
+    "size_oz": 18.0,
+    "current": 4.55,
+    "recommended": 4.19
+   },
+   {
+    "product_id": "3800001720",
+    "name": "KELLOGGS FRUIT LOOPS",
+    "size_oz": 15.0,
+    "current": 2.99,
+    "recommended": 2.79
+   },
+   {
+    "product_id": "3800002920",
+    "name": "KELLOGGS APPLE JACKS",
+    "size_oz": 15.0,
+    "current": 3.39,
+    "recommended": 3.09
+   },
+   {
+    "product_id": "3800003500",
+    "name": "KELLOGG'S CRISPIX",
+    "size_oz": 12.0,
+    "current": 3.18,
+    "recommended": 2.89
+   },
+   {
+    "product_id": "3800004900",
+    "name": "BITE SIZE FRSTD MINI",
+    "size_oz": 19.0,
+    "current": 3.29,
+    "recommended": 2.99
+   },
+   {
+    "product_id": "3800004920",
+    "name": "KELL FROST MINI WHTS",
+    "size_oz": 24.0,
+    "current": 3.77,
+    "recommended": 3.49
+   },
+   {
+    "product_id": "3800050530",
+    "name": "KELLOGGS RICE KRISPI",
+    "size_oz": 15.0,
+    "current": 3.49,
+    "recommended": 3.19
+   },
+   {
+    "product_id": "3828125029",
+    "name": "DOM FROSTED FLAKES",
+    "size_oz": 20.0,
+    "current": 3.19,
+    "recommended": 2.89
+   },
+   {
+    "product_id": "3828125033",
+    "name": "DOM RAISIN BRAN",
+    "size_oz": 25.5,
+    "current": 3.19,
+    "recommended": 2.89
+   },
+   {
+    "product_id": "3828125049",
+    "name": "DOM CORN FLAKES",
+    "size_oz": 18.0,
+    "current": 2.29,
+    "recommended": 2.09
+   },
+   {
+    "product_id": "4300010521",
+    "name": "POST GRAPE-NUTS CERE",
+    "size_oz": 24.0,
+    "current": 2.99,
+    "recommended": 2.79
+   }
+  ]
+ },
+ "margin": {
+  "status": "optimal",
+  "method": "grid search",
+  "current_weekly_value": 51702.165674655975,
+  "optimized_weekly_value": 54545.207496137,
+  "weekly_gain": 2843.041821481027,
+  "gain_pct": 0.05498883430476231,
+  "current_weekly_units": 76914.8628502052,
+  "optimized_weekly_units": 74644.42814958123,
+  "wape": 0.2977370834370108,
+  "error_band_weekly": 16240.130995366408,
+  "binding": [
+   "WHOLE GRAIN TOTAL 12 oz at the top of its band (3.59)",
+   "CHEERIOS 10 oz at the top of its band (2.69)",
+   "HONEY NUT CHEERIOS 14 oz at the top of its band (3.49)",
+   "CHEERIOS 15 oz at the top of its band (3.59)",
+   "CHEERIOS 20 oz at the top of its band (4.59)",
+   "GOLDEN GRAHAMS 18 oz at the top of its band (4.29)",
+   "category volume at its floor (3% below today)"
+  ],
+  "broken_today": [],
+  "prices": [
+   {
+    "product_id": "1600065850",
+    "name": "WHOLE GRAIN TOTAL",
+    "size_oz": 12.0,
+    "current": 3.33,
+    "recommended": 3.59
+   },
+   {
+    "product_id": "1600066510",
+    "name": "CHEERIOS",
+    "size_oz": 10.0,
+    "current": 2.49,
+    "recommended": 2.69
+   },
+   {
+    "product_id": "1600066590",
+    "name": "HONEY NUT CHEERIOS",
+    "size_oz": 14.0,
+    "current": 3.25,
+    "recommended": 3.49
+   },
+   {
+    "product_id": "1600066610",
+    "name": "CHEERIOS",
+    "size_oz": 15.0,
+    "current": 3.35,
+    "recommended": 3.59
+   },
+   {
+    "product_id": "1600066660",
+    "name": "CHEERIOS",
+    "size_oz": 20.0,
+    "current": 4.25,
+    "recommended": 4.59
+   },
+   {
+    "product_id": "1600067970",
+    "name": "GOLDEN GRAHAMS",
+    "size_oz": 18.0,
+    "current": 3.99,
+    "recommended": 4.29
+   },
+   {
+    "product_id": "1600068260",
+    "name": "COCOA PUFFS",
+    "size_oz": 13.8,
+    "current": 2.98,
+    "recommended": 2.99
+   },
+   {
+    "product_id": "1600068870",
+    "name": "LUCKY CHARMS",
+    "size_oz": 14.0,
+    "current": 3.79,
+    "recommended": 3.79
+   },
+   {
+    "product_id": "3000006610",
+    "name": "CAPN CRUNCH CEREAL",
+    "size_oz": 16.0,
+    "current": 3.19,
+    "recommended": 3.19
+   },
+   {
+    "product_id": "3800000120",
+    "name": "KELLOGGS CORN FLAKES",
+    "size_oz": 18.0,
+    "current": 2.85,
+    "recommended": 2.89
+   },
+   {
+    "product_id": "3800000820",
+    "name": "KELLOGG'S RAISIN BRA",
+    "size_oz": 20.0,
+    "current": 2.99,
+    "recommended": 2.99
+   },
+   {
+    "product_id": "3800000828",
+    "name": "KELLOGGS RAISIN BRAN",
+    "size_oz": 25.5,
+    "current": 3.39,
+    "recommended": 3.39
+   },
+   {
+    "product_id": "3800001011",
+    "name": "KELLOGGS CORN POPS",
+    "size_oz": 15.0,
+    "current": 3.28,
+    "recommended": 3.29
+   },
+   {
+    "product_id": "3800001510",
+    "name": "KELLOGG'S FROSTED FL",
+    "size_oz": 15.0,
+    "current": 2.98,
+    "recommended": 2.99
+   },
+   {
+    "product_id": "3800001520",
+    "name": "KELLOGG'S FROSTED FL",
+    "size_oz": 20.0,
+    "current": 3.49,
+    "recommended": 3.49
+   },
+   {
+    "product_id": "3800001527",
+    "name": "KELLOGG'S FROSTED FL",
+    "size_oz": 25.0,
+    "current": 3.98,
+    "recommended": 3.99
+   },
+   {
+    "product_id": "3800001611",
+    "name": "KELLOGGS SPECIAL K",
+    "size_oz": 12.0,
+    "current": 3.35,
+    "recommended": 3.39
+   },
+   {
+    "product_id": "3800001621",
+    "name": "KELLOGGS SPECIAL K",
+    "size_oz": 18.0,
+    "current": 4.55,
+    "recommended": 4.59
+   },
+   {
+    "product_id": "3800001720",
+    "name": "KELLOGGS FRUIT LOOPS",
+    "size_oz": 15.0,
+    "current": 2.99,
+    "recommended": 2.99
+   },
+   {
+    "product_id": "3800002920",
+    "name": "KELLOGGS APPLE JACKS",
+    "size_oz": 15.0,
+    "current": 3.39,
+    "recommended": 3.39
+   },
+   {
+    "product_id": "3800003500",
+    "name": "KELLOGG'S CRISPIX",
+    "size_oz": 12.0,
+    "current": 3.18,
+    "recommended": 3.19
+   },
+   {
+    "product_id": "3800004900",
+    "name": "BITE SIZE FRSTD MINI",
+    "size_oz": 19.0,
+    "current": 3.29,
+    "recommended": 3.29
+   },
+   {
+    "product_id": "3800004920",
+    "name": "KELL FROST MINI WHTS",
+    "size_oz": 24.0,
+    "current": 3.77,
+    "recommended": 3.79
+   },
+   {
+    "product_id": "3800050530",
+    "name": "KELLOGGS RICE KRISPI",
+    "size_oz": 15.0,
+    "current": 3.49,
+    "recommended": 3.49
+   },
+   {
+    "product_id": "3828125029",
+    "name": "DOM FROSTED FLAKES",
+    "size_oz": 20.0,
+    "current": 3.19,
+    "recommended": 3.29
+   },
+   {
+    "product_id": "3828125033",
+    "name": "DOM RAISIN BRAN",
+    "size_oz": 25.5,
+    "current": 3.19,
+    "recommended": 3.19
+   },
+   {
+    "product_id": "3828125049",
+    "name": "DOM CORN FLAKES",
+    "size_oz": 18.0,
+    "current": 2.29,
+    "recommended": 2.29
+   },
+   {
+    "product_id": "4300010521",
+    "name": "POST GRAPE-NUTS CERE",
+    "size_oz": 24.0,
+    "current": 2.99,
+    "recommended": 2.99
+   }
+  ]
+ },
+ "default_objective": "margin"
+}

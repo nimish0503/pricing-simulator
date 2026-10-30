@@ -1,0 +1,62 @@
+{% extends "base.html.j2" %}
+{% block title %}Pricing findings: {{ client_name }}{% endblock %}
+{% block body %}
+<h1>Pricing and promotion findings: {{ client_name }}</h1>
+<p class="meta">Generated {{ generated }}. Data: {{ data.stores }} stores, {{ data.products }} products, weeks starting {{ data.first_week }} to {{ data.last_week }}. Models fitted on weeks starting {{ train[0] }} to {{ train[1] }}; the last 52 weeks are held out for the backtest. Every number below comes from a file in <code>outputs/{{ data.client_id }}/</code>, named under each table.</p>
+
+<h2>Summary</h2>
+{% if narrative.summary %}{% for p in narrative.summary %}<p>{{ p }}</p>{% endfor %}
+{% else %}<div class="placeholder">Summary not written yet. Put it in <code>docs/findings/{{ data.client_id }}.md</code>.</div>{% endif %}
+
+<h2>Most price-sensitive products</h2>
+<p>Regular-price elasticity from {{ model_of_record }} (ADR 0003): the % change in weekly units for a 1% permanent change in the shelf price. -2.5 means a 1% price rise loses about 2.5% of units. Only products inside the plausible range ({{ plausibility.own_elasticity_min }} to {{ plausibility.own_elasticity_max }}) are ranked.</p>
+<table>
+  <tr><th>Product</th><th class="num">Size oz</th><th class="num">Elasticity</th><th class="num">95% interval</th><th class="num">Response to a temporary cut</th></tr>
+  {% for e in sensitive %}<tr><td>{{ e.name }}</td><td class="num">{{ e.size_oz }}</td><td class="num">{{ "%.2f"|format(e.own_elasticity) }}</td><td class="num">{{ "%.2f"|format(e.own_lower) }} to {{ "%.2f"|format(e.own_upper) }}</td><td class="num">{{ "%.2f"|format(e.promo_elasticity) }}</td></tr>{% endfor %}
+</table>
+<p>Least sensitive, where a price rise costs the fewest units:
+{% for e in least_sensitive %}{{ e.name }} {{ e.size_oz }} oz ({{ "%.2f"|format(e.own_elasticity) }}){{ ", " if not loop.last else "." }}{% endfor %}</p>
+{% if flagged %}<p>Outside the plausible range and not used for advice:
+{% for e in flagged %}{{ e.name }} {{ e.size_oz }} oz ({{ "%.2f"|format(e.own_elasticity) }}){{ ", " if not loop.last else "." }}{% endfor %}</p>{% endif %}
+<img src="data:image/png;base64,{{ elasticity_chart }}" alt="Own-price elasticity by product">
+<p class="meta">Source: elasticities.csv (model = {{ model_of_record }}).</p>
+
+<h2>Promo mechanics</h2>
+<p>Each mechanic run for one week on one product at a time across all stores, averaged over products. Units and $ are per promo week, chain-wide. Cannibalized share is the share of the promoted product's extra units that its own manufacturer's other products lose.</p>
+{% if best and worst %}<p>Best for category gross margin: <b>{{ best[0].scenario }}</b> ({{ "{:+,.0f}".format(best[0].category_incremental_margin) }} $ margin, {{ "{:+,.0f}".format(best[0].category_incremental_revenue) }} $ revenue).
+Worst: <b>{{ worst[0].scenario }}</b> ({{ "{:+,.0f}".format(worst[0].category_incremental_margin) }} $ margin, {{ "{:+,.0f}".format(worst[0].category_incremental_revenue) }} $ revenue).</p>{% endif %}
+<div class="wrap"><table>
+  <tr><th>Mechanic</th><th class="num">Extra units, promoted product</th><th class="num">Own cannibalization, units</th><th class="num">Cannibalized share</th><th class="num">Taken from competitors, units</th><th class="num">Net category units</th><th class="num">Category revenue $</th><th class="num">Category margin $</th><th>Note</th></tr>
+  {% for m in mechanics %}<tr><td>{{ m.scenario }}</td><td class="num">{{ "{:,.0f}".format(m.incremental_units) }}</td><td class="num">{{ "{:,.0f}".format(m.own_cannibalization_units) }}</td><td class="num">{{ "%.0f%%"|format(100 * m.cannibalized_share) if m.cannibalized_share == m.cannibalized_share else "" }}</td><td class="num">{{ "{:,.0f}".format(m.competitor_loss_units) }}</td><td class="num">{{ "{:,.0f}".format(m.category_incremental_units) }}</td><td class="num">{{ "{:+,.0f}".format(m.category_incremental_revenue) }}</td><td class="num">{{ "{:+,.0f}".format(m.category_incremental_margin) }}</td><td>{{ m.note or "" }}</td></tr>{% endfor %}
+</table></div>
+<img src="data:image/png;base64,{{ promo_chart }}" alt="Promo mechanics">
+<p class="meta">Source: promo_plan.csv.</p>
+
+<h2>Price recommendation</h2>
+<p>Objective: weekly category gross {{ objective }}. Rules: every price within ±10% of today's, ending in .x9, bigger packs cheaper per ounce, private label below national brands, category units down at most 3%.
+Result ({{ opt.method }}): {{ "{:,.0f}".format(opt.current_weekly_value) }} $ to {{ "{:,.0f}".format(opt.optimized_weekly_value) }} $ per week, a gain of <b>{{ "{:+,.0f}".format(opt.weekly_gain) }} $ ({{ "%+.1f%%"|format(100 * opt.gain_pct) }})</b>.
+Weekly units go from {{ "{:,.0f}".format(opt.current_weekly_units) }} to {{ "{:,.0f}".format(opt.optimized_weekly_units) }}.</p>
+<p><b>Risk.</b> {% if opt.wape %}The choice model behind this misses chain-wide weekly category units by {{ "%.0f%%"|format(100 * opt.wape) }} on held-out weeks (WAPE), so the {{ objective }} at the recommended prices is uncertain by roughly ±{{ "{:,.0f}".format(opt.error_band_weekly) }} $ per week. {% if opt.error_band_weekly > opt.weekly_gain|abs %}That band is wider than the gain, so the gain is not distinguishable from forecast error. Test it in a subset of stores before rolling it out.{% else %}The gain is larger than that band.{% endif %}{% else %}Run <code>make backtest</code> for an error band.{% endif %}
+For comparison, maximizing {{ "margin" if objective == "revenue" else "revenue" }} instead gives {{ "{:+,.0f}".format(other.weekly_gain) }} $ ({{ "%+.1f%%"|format(100 * other.gain_pct) }}) on that measure.</p>
+<p>{{ moved }} of {{ opt.prices|length }} prices change. The largest moves:</p>
+<table>
+  <tr><th>Product</th><th class="num">Size oz</th><th class="num">Current $</th><th class="num">Recommended $</th><th class="num">Change</th></tr>
+  {% for p in biggest_moves %}<tr><td>{{ p.name }}</td><td class="num">{{ p.size_oz }}</td><td class="num">{{ "%.2f"|format(p.current) }}</td><td class="num">{{ "%.2f"|format(p.recommended) }}</td><td class="num">{{ "%+.1f%%"|format(100 * p.change) }}</td></tr>{% endfor %}
+</table>
+{% if opt.binding %}<p>Rules that bind (the optimizer would go further without them):</p><ul>{% for b in opt.binding[:12] %}<li>{{ b }}</li>{% endfor %}{% if opt.binding|length > 12 %}<li>and {{ opt.binding|length - 12 }} more</li>{% endif %}</ul>{% endif %}
+{% if opt.broken_today %}<p>Rules already broken at today's prices (left as they are):</p><ul>{% for b in opt.broken_today %}<li>{{ b }}</li>{% endfor %}</ul>{% endif %}
+<p class="meta">Source: optimizer.json.</p>
+
+<h2>Recommendation</h2>
+{% if narrative.recommendation %}{% for p in narrative.recommendation %}<p>{{ p }}</p>{% endfor %}
+{% else %}<div class="placeholder">Recommendation not written yet. Add a "## Recommendation" section to <code>docs/findings/{{ data.client_id }}.md</code>.</div>{% endif %}
+
+{% if backtest %}
+<h2>How far to trust the models</h2>
+<pre style="white-space: pre-wrap; font-size: 12px">{{ backtest }}</pre>
+<p class="meta">Source: backtest.md, backtest_summary.csv.</p>
+{% endif %}
+
+<h2>Data limitations</h2>
+<ul>{% for l in limitations %}<li>{{ l }}</li>{% endfor %}</ul>
+{% endblock %}
