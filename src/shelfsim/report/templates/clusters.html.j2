@@ -1,0 +1,41 @@
+{% extends "base.html.j2" %}
+{% block title %}Clusters: {{ client_name }}{% endblock %}
+{% block body %}
+<h1>Product and store clusters: {{ client_name }}</h1>
+<p class="meta">Generated {{ generated }}. Fitted on the training period, weeks starting {{ period[0] }} to {{ period[1] }}.</p>
+
+<h2>Products</h2>
+<p>Features, standardised: median price per ounce ($/oz), size (oz), private label (0/1), mean discount depth over observed weeks, and promo frequency (share of observed store-weeks on any promo).
+Chosen: <b>{{ product_choice.method }}, k = {{ product_choice.k }}</b>, silhouette {{ "%.3f"|format(product_choice.silhouette) }}: the best silhouette among solutions where every cluster has at least two products.
+Cluster names are generated from the profiles below. Override them in the client YAML under <code>product_cluster_names</code>.</p>
+
+<table>
+  <tr><th>Method</th><th class="num">k</th><th class="num">Silhouette</th><th class="num">Smallest cluster</th></tr>
+  {% for r in product_table %}<tr><td>{{ r.method }}</td><td class="num">{{ r.k }}</td><td class="num">{{ "%.3f"|format(r.silhouette) }}</td><td class="num">{{ r.smallest_cluster }}</td></tr>{% endfor %}
+</table>
+
+<table>
+  <tr><th>Cluster</th><th>Name</th><th class="num">Products</th><th class="num">$/oz</th><th class="num">Size oz</th><th class="num">Private label share</th><th class="num">Mean depth</th><th class="num">Promo frequency</th></tr>
+  {% for p in product_profile %}<tr><td>{{ p.cluster }}</td><td>{{ p.cluster_name }}</td><td class="num">{{ p.members }}</td><td class="num">{{ "%.3f"|format(p.price_per_oz) }}</td><td class="num">{{ "%.1f"|format(p.size_oz) }}</td><td class="num">{{ "%.0f%%"|format(100 * p.is_private_label) }}</td><td class="num">{{ "%.1f%%"|format(100 * p.avg_discount_depth) }}</td><td class="num">{{ "%.1f%%"|format(100 * p.promo_frequency) }}</td></tr>{% endfor %}
+</table>
+<img src="data:image/png;base64,{{ product_pca }}" alt="PCA plot of product clusters">
+
+<details><summary>Products by cluster</summary>
+<table>
+  <tr><th>Cluster</th><th>Product</th><th>Name</th><th>Manufacturer</th><th class="num">Size oz</th><th class="num">$/oz</th><th class="num">Promo frequency</th></tr>
+  {% for p in products %}<tr><td>{{ p.cluster }}</td><td>{{ p.product_id }}</td><td>{{ p.name }}</td><td>{{ p.manufacturer }}</td><td class="num">{{ "%.1f"|format(p.size_oz) }}</td><td class="num">{{ "%.3f"|format(p.price_per_oz) }}</td><td class="num">{{ "%.1f%%"|format(100 * p.promo_frequency) }}</td></tr>{% endfor %}
+</table></details>
+
+<h2>Stores</h2>
+<p>Features, standardised: price index (store unit price over chain mean for the same product-week), mean weekly category units, promo lift (geometric mean of promo-week over regular-week units per product), and segment dummies.
+Chosen: <b>k-means, k = {{ store_choice.k }}</b>, silhouette {{ "%.3f"|format(store_choice.silhouette) }}.</p>
+<table>
+  <tr><th class="num">k</th><th class="num">Silhouette</th><th class="num">Smallest cluster</th></tr>
+  {% for r in store_table %}<tr><td class="num">{{ r.k }}</td><td class="num">{{ "%.3f"|format(r.silhouette) }}</td><td class="num">{{ r.smallest_cluster }}</td></tr>{% endfor %}
+</table>
+<table>
+  <tr><th>Cluster</th><th>Name</th><th class="num">Stores</th><th class="num">Price index</th><th class="num">Weekly units</th><th class="num">Promo lift</th></tr>
+  {% for s in store_profile %}<tr><td>{{ s.cluster }}</td><td>{{ s.cluster_name }}</td><td class="num">{{ s.members }}</td><td class="num">{{ "%.3f"|format(s.price_index) }}</td><td class="num">{{ "{:,.0f}".format(s.avg_weekly_units) }}</td><td class="num">{{ "%.2fx"|format(s.promo_lift) }}</td></tr>{% endfor %}
+</table>
+<img src="data:image/png;base64,{{ store_pca }}" alt="PCA plot of store clusters">
+{% endblock %}
