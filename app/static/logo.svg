@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="32" viewBox="0 0 200 32">
+  <g fill="none" stroke="#2563EB" stroke-width="2.4" stroke-linecap="round">
+    <path d="M3 27h24M3 17h24M5 7v20M25 7v20"/>
+  </g>
+  <rect x="9" y="10" width="4" height="7" rx="1" fill="#2563EB"/>
+  <rect x="15" y="12" width="4" height="5" rx="1" fill="#D97706"/>
+  <rect x="9" y="20" width="4" height="7" rx="1" fill="#D97706"/>
+  <rect x="15" y="21" width="4" height="6" rx="1" fill="#2563EB"/>
+  <text x="36" y="22" font-family="IBM Plex Sans, Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#2563EB">Shelf Simulator</text>
+</svg>
