@@ -6,7 +6,14 @@ from streamlit.testing.v1 import AppTest
 from shelfsim.deploy import DEPLOY_DIR
 
 APP = Path(__file__).parents[1] / "app" / "streamlit_app.py"
-PAGES = ["views/overview.py", "views/elasticities.py", "views/simulator.py", "views/optimizer.py"]
+PAGES = [
+    "views/overview.py",
+    "views/product.py",
+    "views/elasticities.py",
+    "views/compare.py",
+    "views/simulator.py",
+    "views/optimizer.py",
+]
 
 pytestmark = pytest.mark.skipif(
     not any(DEPLOY_DIR.glob("*/summary.json")), reason="no deploy outputs"

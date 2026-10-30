@@ -50,6 +50,21 @@ def export(cfg: ClientConfig) -> None:
         .sort("week_start")
     )
     weekly.write_csv(target / "weekly_category.csv")
+    # Chain-level product x week: summed over stores, so it is an aggregate, not raw rows.
+    (
+        sales.group_by("product_id", "week_start")
+        .agg(
+            units=pl.col("units").sum(),
+            revenue=pl.col("revenue").sum(),
+            shelf_price=pl.col("unit_price").median(),
+            regular_price=pl.col("base_price").median(),
+            stores_on_price_cut=pl.col("on_price_cut").mean(),
+            stores_on_feature=pl.col("on_feature").mean(),
+            stores_on_display=pl.col("on_display").mean(),
+        )
+        .sort("product_id", "week_start")
+        .write_csv(target / "product_weekly.csv")
+    )
     product_profile(sales, products).write_csv(target / "product_profile.csv")
     (target / "summary.json").write_text(
         json.dumps(

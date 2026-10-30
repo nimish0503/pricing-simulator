@@ -9,7 +9,7 @@ from shared import (
     PLAUSIBLE,
     current_client,
     glossary,
-    header,
+    hero,
     label,
     plot,
     table,
@@ -17,11 +17,6 @@ from shared import (
 )
 
 client = current_client()
-header(
-    "How much do shoppers react to price?",
-    "Each product's price elasticity: the % of weekly units it loses when its regular price "
-    "rises 1%. The further left, the more a price rise costs in volume.",
-)
 
 e = with_label(table(client, "elasticities.csv"))
 models = [
@@ -41,6 +36,18 @@ model = st.segmented_control(
 data = e.filter(pl.col("model") == model).drop_nulls("own_elasticity").sort("own_elasticity")
 
 most, least = data.row(0, named=True), data.row(-1, named=True)
+supported = data.filter("plausible")
+hero(
+    f"Price sensitivity · {MODELS.get(model, model)}",
+    f"A 1% price rise costs the typical product {-data['own_elasticity'].median():.1f}% of "
+    "its units",
+    f"From {supported['product'][0]} ({supported['own_elasticity'][0]:.1f}) to "
+    f"{supported['product'][-1]} ({supported['own_elasticity'][-1]:.1f}) among the "
+    f"{supported.height} products with believable estimates. The less sensitive a product, "
+    "the more room there is to raise its price."
+    if supported.height
+    else "None of this model's estimates fall in the expected range.",
+)
 cols = st.columns(4)
 cols[0].metric(
     "Typical elasticity",

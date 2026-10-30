@@ -7,8 +7,9 @@ from shared import (
     SETTINGS,
     current_client,
     document,
+    findings,
     glossary,
-    header,
+    hero,
     label,
     plot,
     table,
@@ -18,10 +19,28 @@ from shared import (
 client = current_client()
 result = document(client, "optimizer.json")
 rules = SETTINGS.optimizer
-header(
-    "What should we charge, and which promos pay?",
-    "Regular prices that maximize weekly category margin within the business rules, and the "
-    "weekly payback of each promo mechanic for every product.",
+f = findings(client)
+best = f["best_mechanic"]
+hero(
+    "Recommendations",
+    f"Raise {f['raised']} prices, hold {f['held']}"
+    + (f", cut {f['cut']}" if f["cut"] else "")
+    + f": +${f['gain']:,.0f} margin a week",
+    f"The biggest move is {label(f['biggest_rise']['name'], f['biggest_rise']['size_oz'])}, "
+    f"{f['biggest_rise']['current']:.2f} to {f['biggest_rise']['recommended']:.2f}. "
+    + (
+        f"For promos, {best['scenario']} pays best at +${best['margin']:,.0f} category margin "
+        "per promo week on average."
+        if best["margin"] > 0
+        else "No promo mechanic adds category margin on average, so promos here are a "
+        "volume or traffic decision, not a margin one."
+    ),
+    [
+        ("Margin per week today", f"${f['margin_today']:,.0f}"),
+        ("With recommended prices", f"${f['margin_today'] + f['gain']:,.0f}"),
+        ("Change in units", f"{f['units_change_pct']:+.1%}"),
+        ("Forecast error band", f"±${f['band']:,.0f}"),
+    ],
 )
 
 prices_tab, promo_tab = st.tabs(
@@ -201,7 +220,9 @@ with promo_tab:
             hovertemplate="%{y}: %{x:$,.0f} category margin<extra></extra>",
         )
     )
-    fig.update_xaxes(title="Extra category margin in the promo week, all stores", tickprefix="$")
+    fig.update_xaxes(
+        title="Extra category margin in the promo week, all stores", tickformat="$,.0f"
+    )
     fig.update_yaxes(title=None)
     plot(fig, 300, legend=False)
     notes = [n for n in one["note"].drop_nulls().unique().to_list() if n]

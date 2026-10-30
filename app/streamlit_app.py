@@ -13,14 +13,20 @@ page = st.navigation(
     {
         "Understand": [
             st.Page(
-                "views/overview.py", title="Overview", icon=":material/dashboard:", default=True
+                "views/overview.py", title="Briefing", icon=":material/summarize:", default=True
+            ),
+            st.Page(
+                "views/product.py", title="Product deep-dive", icon=":material/search_insights:"
             ),
             st.Page(
                 "views/elasticities.py", title="Price sensitivity", icon=":material/trending_down:"
             ),
+            st.Page(
+                "views/compare.py", title="Compare retailers", icon=":material/compare_arrows:"
+            ),
         ],
         "Decide": [
-            st.Page("views/simulator.py", title="Scenario simulator", icon=":material/tune:"),
+            st.Page("views/simulator.py", title="What-if", icon=":material/tune:"),
             st.Page("views/optimizer.py", title="Recommendations", icon=":material/price_check:"),
         ],
     }
