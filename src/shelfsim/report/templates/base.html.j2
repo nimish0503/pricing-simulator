@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}{% endblock %}</title>
+<style>
+  :root { --fg: #1d1d1f; --muted: #6e6e73; --line: #e3e3e6; --bg: #ffffff; --accent: #2f5d8a; --warn: #a1450f; }
+  body { font: 15px/1.5 -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; color: var(--fg); background: var(--bg); max-width: 1100px; margin: 2rem auto; padding: 0 16px; }
+  h1 { font-size: 1.6rem; margin-bottom: .2rem; }
+  h2 { font-size: 1.2rem; margin-top: 2.2rem; border-bottom: 1px solid var(--line); padding-bottom: .3rem; }
+  .meta { color: var(--muted); margin-top: 0; }
+  table { border-collapse: collapse; width: 100%; margin: .8rem 0; font-size: 13px; }
+  th, td { text-align: left; padding: 5px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .note { border-left: 3px solid var(--warn); padding: .3rem .8rem; margin: .6rem 0; background: #fbf6f2; }
+  .kpis { display: flex; flex-wrap: wrap; gap: 12px; }
+  .kpi { border: 1px solid var(--line); border-radius: 6px; padding: 8px 14px; min-width: 140px; }
+  .kpi b { display: block; font-size: 1.3rem; }
+  .kpi span { color: var(--muted); font-size: 12px; }
+  .wrap { overflow-x: auto; }
+  img { max-width: 100%; }
+  .placeholder { border: 1px dashed var(--warn); padding: .6rem .9rem; color: var(--warn); }
+</style>
+</head>
+<body>
+{% block body %}{% endblock %}
+</body>
+</html>

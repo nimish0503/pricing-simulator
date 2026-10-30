@@ -1,0 +1,57 @@
+# A third client in a format neither real client uses. If onboarding this needs new Python
+# code, the design is wrong (spec, Phase 2).
+client_id: client_c
+display_name: "Fake client C (grams, week-ending dates, one promo-type column)"
+raw_dir: raw/client_c
+
+sales:
+  path: movement.csv
+  reader: csv
+  columns:
+    store_id: shop
+    product_id: sku
+    week: wk_ending
+    units: qty_sold
+    revenue: sales_value
+    price: shelf_price
+    promo_type: promo_type
+
+products:
+  path: items.csv
+  reader: csv
+  columns:
+    product_id: sku
+    name: desc
+    manufacturer: brand_owner
+    size: pack
+
+stores:
+  path: shops.csv
+  reader: csv
+  columns:
+    store_id: shop
+    segment: banner
+
+calendar:
+  kind: week_end_date
+
+sizes:
+  default_unit: g
+
+product_rules:
+  private_label: "manufacturer = 'OWN LABEL'"
+
+promo:
+  feature: "promo_type = 'FEAT'"
+  display: "promo_type = 'DISP'"
+  price_cut: "promo_type = 'TPR'"
+
+selection:
+  last_weeks: 30
+  top_n_products: 2
+  private_label_top_n: 1
+  min_weeks_observed: 10
+
+cost:
+  margin_national: 0.2
+  margin_private_label: 0.3

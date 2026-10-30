@@ -1,0 +1,74 @@
+# Client A: dunnhumby "Breakfast at the Frat", cold cereal category.
+# Column and sheet names follow the dunnhumby user guide for this dataset. They have not been
+# checked against the real download yet: the raw file isn't in data/raw/client_a.
+client_id: client_a
+display_name: "dunnhumby Breakfast at the Frat (cold cereal)"
+raw_dir: data/raw/client_a
+
+sales:
+  path: "dunnhumby - Breakfast at the Frat.xlsx"
+  reader: excel
+  sheet: dh Transaction Data
+  header_contains: WEEK_END_DATE
+  columns:
+    store_id: STORE_NUM
+    product_id: UPC
+    week: WEEK_END_DATE
+    units: UNITS
+    revenue: SPEND
+    price: PRICE
+    given_base_price: BASE_PRICE
+    feature: FEATURE
+    display: DISPLAY
+    tpr_only: TPR_ONLY
+
+products:
+  path: "dunnhumby - Breakfast at the Frat.xlsx"
+  reader: excel
+  sheet: dh Products Lookup
+  header_contains: UPC
+  columns:
+    product_id: UPC
+    name: DESCRIPTION
+    manufacturer: MANUFACTURER
+    category: CATEGORY
+    size: PRODUCT_SIZE
+
+stores:
+  path: "dunnhumby - Breakfast at the Frat.xlsx"
+  reader: excel
+  sheet: dh Store Lookup
+  header_contains: STORE_ID
+  columns:
+    store_id: STORE_ID
+    segment: SEG_VALUE_NAME
+    region: ADDRESS_STATE_PROV_CODE
+    avg_weekly_baskets: AVG_WEEKLY_BASKETS
+    sales_area: SALES_AREA_SIZE_NUM
+
+calendar:
+  kind: week_end_date
+
+product_rules:
+  category_filter: "category = 'COLD CEREAL'"
+  private_label: "manufacturer = 'PRIVATE LABEL'"
+
+store_rules:
+  extra_columns: [avg_weekly_baskets, sales_area]
+
+promo:
+  feature: "feature = 1"
+  display: "display = 1"
+  price_cut: "tpr_only = 1"
+
+selection:
+  last_weeks: 156
+  top_n_products: 30
+  private_label_top_n: 5
+  min_weeks_observed: 52
+
+# dunnhumby reports no cost. Margin on base price by brand tier, set to client B's median
+# PROFIT in weeks 192-399: 17.5% national, 35.5% private label (ADR 0005).
+cost:
+  margin_national: 0.175
+  margin_private_label: 0.355

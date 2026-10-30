@@ -1,6 +1,6 @@
 # ADR 0002: base-price estimation method
 
-Status: proposed
+Status: proposed. The decision below is a draft to review; edit it into your own reasoning before marking it accepted.
 
 ## Context
 
@@ -19,4 +19,10 @@ Parameters to set for whichever option wins: window length, minimum weeks of his
 
 ## Decision
 
+Option 1, same method for both clients: base price = max unit price over the trailing 8 weeks (current week included) of observed weeks without a promo code, forward-filled, and backward-filled at the start of a selling span. Client A's own BASE_PRICE is kept as `given_base_price` during onboarding only, and the data-quality report shows how often the two agree. A price this far under base (5%, `price_cut_min_depth`) counts as a price cut even without a code, because Dominick's doesn't code every deal (manual, part 4).
+
+Rejected the mode (option 2): on Dominick's the regular price changes often enough that an 8-week mode has frequent ties. Rejected centred windows (option 3) because base price is a model input and must not use future weeks. Rejected option 4 because the two clients would no longer be measured the same way.
+
 ## Consequences
+
+A permanent price cut is read as a temporary cut for up to 8 weeks, until the trailing max catches up. A permanent rise shows up at once. Both bias regular-price elasticity slightly toward zero around price changes. The 8-week window is in `configs/modeling.yaml`.

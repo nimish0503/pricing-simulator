@@ -29,6 +29,8 @@ def five_sales_rows() -> pl.DataFrame:
             "on_display": [False, False, True, False, False],
             "on_price_cut": [False, False, True, False, False],
             "unit_cost": [None, None, None, None, None],
+            "row_status": ["observed", "zero_sales", "observed", "observed", "observed"],
+            "is_outlier": [False] * 5,
         },
         schema_overrides={"unit_cost": pl.Float64},
     )

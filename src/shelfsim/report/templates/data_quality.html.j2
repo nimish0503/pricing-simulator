@@ -1,0 +1,68 @@
+{% extends "base.html.j2" %}
+{% block title %}Data quality: {{ client_name }}{% endblock %}
+{% block body %}
+<h1>Data quality: {{ client_name }}</h1>
+<p class="meta">Generated {{ generated }}. Weeks {{ summary.first_week }} to {{ summary.last_week }} (week_start dates).</p>
+
+<div class="kpis">
+  <div class="kpi"><b>{{ summary.stores }}</b><span>stores</span></div>
+  <div class="kpi"><b>{{ summary.products }}</b><span>products kept</span></div>
+  <div class="kpi"><b>{{ summary.weeks }}</b><span>weeks with data</span></div>
+  <div class="kpi"><b>{{ "{:,}".format(summary.rows) }}</b><span>store x product x week rows</span></div>
+  <div class="kpi"><b>{{ "%.1f%%"|format(100 * summary.zero_sales_share) }}</b><span>rows that are zero-sales weeks</span></div>
+  <div class="kpi"><b>{{ "{:,}".format(summary.outliers) }}</b><span>outlier weeks flagged (kept)</span></div>
+</div>
+
+{% if notes %}
+<h2>Things that differ from what we expected</h2>
+{% for n in notes %}<div class="note">{{ n }}</div>{% endfor %}
+{% endif %}
+
+<h2>Rows after each step</h2>
+<table>
+  <tr><th>Step</th><th class="num">Rows</th><th>Detail</th></tr>
+  {% for s in steps %}<tr><td>{{ s.step }}</td><td class="num">{{ "{:,}".format(s.rows) }}</td><td>{{ s.detail }}</td></tr>{% endfor %}
+</table>
+
+<h2>Row status</h2>
+<p>observed: sold at least one unit. zero_sales: the store reported that week, the product was on sale before and after, and nothing sold. Longer gaps are treated as the product being off the shelf and are not in the table.</p>
+<table>
+  <tr><th>Status</th><th class="num">Rows</th></tr>
+  {% for s in status %}<tr><td>{{ s.row_status }}</td><td class="num">{{ "{:,}".format(s.len) }}</td></tr>{% endfor %}
+</table>
+<p>{{ "{:,}".format(summary.price_above_base_rows) }} observed rows were priced above the estimated base price. Their discount depth is set to 0.
+{% if summary.stores_without_segment %}{{ summary.stores_without_segment }} stores have no segment.{% endif %}</p>
+
+{% if base_check %}
+<h2>Estimated base price vs the client's BASE_PRICE</h2>
+<p>Over {{ "{:,}".format(base_check.n) }} observed rows: {{ "%.1f%%"|format(100 * base_check.within_2pct) }} within 2%, {{ "%.1f%%"|format(100 * base_check.within_5pct) }} within 5%, median gap {{ "%.1f%%"|format(100 * base_check.median_gap) }}.</p>
+{% endif %}
+
+<h2>Products kept: prices, promo frequency, outliers</h2>
+<p>Prices are $ per unit over observed weeks. Promo shares are shares of observed store-weeks. Mean depth is the average discount depth in price-cut weeks.</p>
+<div class="wrap"><table>
+  <tr><th>Product</th><th>Name</th><th>Manufacturer</th><th class="num">Size oz</th><th>PL</th><th class="num">Units</th><th class="num">Revenue $</th>
+      <th class="num">Zero-sales share</th><th class="num">Price p10</th><th class="num">Median</th><th class="num">p90</th><th class="num">Base median</th>
+      <th class="num">Price-cut share</th><th class="num">Mean depth</th><th class="num">Feature share</th><th class="num">Display share</th><th class="num">Outliers</th></tr>
+  {% for p in profile %}<tr>
+    <td>{{ p.product_id }}</td><td>{{ p.name }}</td><td>{{ p.manufacturer }}</td><td class="num">{{ "%.1f"|format(p.size_oz) }}</td><td>{{ "yes" if p.is_private_label else "" }}</td>
+    <td class="num">{{ "{:,}".format(p.units) }}</td><td class="num">{{ "{:,.0f}".format(p.revenue) }}</td>
+    <td class="num">{{ "%.1f%%"|format(100 * p.zero_sales_share) }}</td>
+    <td class="num">{{ "%.2f"|format(p.price_p10) }}</td><td class="num">{{ "%.2f"|format(p.price_median) }}</td><td class="num">{{ "%.2f"|format(p.price_p90) }}</td><td class="num">{{ "%.2f"|format(p.base_price_median) }}</td>
+    <td class="num">{{ "%.1f%%"|format(100 * p.price_cut_share) }}</td><td class="num">{{ "%.1f%%"|format(100 * p.mean_depth_on_cut) if p.mean_depth_on_cut is not none else "" }}</td>
+    <td class="num">{{ "%.1f%%"|format(100 * p.feature_share) if p.feature_share is not none else "not reported" }}</td>
+    <td class="num">{{ "%.1f%%"|format(100 * p.display_share) if p.display_share is not none else "not reported" }}</td>
+    <td class="num">{{ p.outliers }}</td></tr>{% endfor %}
+</table></div>
+
+<h2>Products dropped</h2>
+<table>
+  <tr><th>Reason</th><th class="num">Products</th></tr>
+  {% for d in dropped_counts %}<tr><td>{{ d.reason }}</td><td class="num">{{ d.len }}</td></tr>{% endfor %}
+</table>
+<details><summary>First {{ dropped|length }} dropped products</summary>
+<table>
+  <tr><th>Product</th><th>Name</th><th>Reason</th></tr>
+  {% for d in dropped %}<tr><td>{{ d.product_id }}</td><td>{{ d.name }}</td><td>{{ d.reason }}</td></tr>{% endfor %}
+</table></details>
+{% endblock %}

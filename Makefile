@@ -6,27 +6,26 @@ setup:
 	uv sync
 	uv run pre-commit install
 
-# Phase 2 to 5 targets fail until their module exists.
 onboard:
-	uv run python -m shelfsim.onboarding --client $(CLIENT)
+	uv run python -m shelfsim onboard --client $(CLIENT)
 
 cluster:
-	uv run python -m shelfsim.segmentation --client $(CLIENT)
+	uv run python -m shelfsim cluster --client $(CLIENT)
 
 model:
-	uv run python -m shelfsim.demand --client $(CLIENT)
+	uv run python -m shelfsim model --client $(CLIENT)
 
 backtest:
-	uv run python -m shelfsim.evaluation --client $(CLIENT)
+	uv run python -m shelfsim backtest --client $(CLIENT)
 
 simulate:
-	uv run python -m shelfsim.choice --client $(CLIENT)
+	uv run python -m shelfsim simulate --client $(CLIENT)
 
 app:
 	uv run streamlit run app/streamlit_app.py
 
 report:
-	uv run python -m shelfsim.report --client $(CLIENT)
+	uv run python -m shelfsim report --client $(CLIENT)
 
 test:
 	uv run pytest

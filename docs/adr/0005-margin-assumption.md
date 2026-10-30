@@ -1,6 +1,6 @@
 # ADR 0005: margin assumption for client A
 
-Status: proposed
+Status: proposed. The decision below is a draft to review; edit it into your own reasoning before marking it accepted.
 
 ## Context
 
@@ -19,4 +19,8 @@ Also to decide: whether cost is fixed per product or moves with base price, and 
 
 ## Decision
 
+Option 2 with option 3's numbers: margin on base price by brand tier, set to client B's median PROFIT in weeks 192-399 (17.5% national, 35.5% private label, from 2.26 million observed rows). Cost = base price x (1 - margin), fixed per week, so a temporary cut comes out of margin. Values live in `configs/clients/client_a.yaml`.
+
 ## Consequences
+
+Margin numbers for client A are an assumption and the report says so. Using 1990s Chicago margins for a 2010s retailer is the weakest link; the private-label gap (twice the national margin) is the part most likely to carry over. No manufacturer promo funding is modelled for either client, so every promo pays for its own discount.

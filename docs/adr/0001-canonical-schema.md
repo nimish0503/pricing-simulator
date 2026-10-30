@@ -1,6 +1,6 @@
 # ADR 0001: canonical schema design
 
-Status: proposed
+Status: proposed. The decision below is a draft to review; edit it into your own reasoning before marking it accepted.
 
 ## Context
 
@@ -47,4 +47,18 @@ Promo representation:
 
 ## Decision
 
+Row status: option 3, plus a column. `sales` holds observed and zero_sales rows only, labelled by a `row_status` column. Weeks outside a store-product's selling span, zero runs longer than `max_zero_run_weeks` (8) and rows failing a client row filter are dropped and counted in the data-quality report. A zero_sales row gets the base price as its unit price, so `unit_price > 0` holds on every row. Rejected option 1 (null prices) because every model would need a null-price branch; rejected option 2 (separate grid table) because the zero weeks matter to WAPE and belong next to the sales.
+
+Discount depth: option 1, clip at 0. 189 of 403,982 client B rows are priced above base and the report counts them. Negative depth would let a model read a price rise above "regular" as an anti-promo, which the data is too thin to support.
+
+Price per ounce: option 2, derived on read from `unit_price / products.size_oz`. One source of truth for size.
+
+Promo representation: option 1, three booleans plus depth. `on_feature` and `on_display` are nullable: null means the client doesn't report the signal (Dominick's), which is different from "not featured". Models treat null as 0 and drop a regressor with no variation.
+
+Added `is_outlier` (flagged, never deleted) so models can choose to exclude outliers from fitting.
+
+Stores are not strict: client demographic columns pass through to Parquet. In DuckDB they go to a long `store_attributes` table so the `stores` table has the same columns for every client.
+
 ## Consequences
+
+Downstream code never needs to know whether a client reports feature or display. A client whose promo data has more mechanics (coupon, bonus buy) loses that detail: Dominick's B, C and S codes all become `on_price_cut`. The fake third client test (`tests/onboarding/test_onboarding.py`) shows a new format needs only a YAML file.

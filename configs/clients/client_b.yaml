@@ -1,0 +1,164 @@
+# Client B: Dominick's Finer Foods, cereal category (Kilts Center, Chicago Booth).
+# Field meanings checked against the Dominick's data manual (data/raw/client_b/manual.pdf).
+client_id: client_b
+display_name: "Dominick's Finer Foods (cereal)"
+raw_dir: data/raw/client_b
+
+sales:
+  path: wcer.csv
+  reader: csv
+  columns:
+    store_id: STORE
+    product_id: UPC
+    week: WEEK
+    units: MOVE
+    price: PRICE
+    qty: QTY
+    sale: SALE
+    profit: PROFIT
+    ok: OK
+
+products:
+  path: upccer.csv
+  reader: csv
+  # The UPC file has a few non-UTF-8 bytes in descriptions.
+  encoding: latin1
+  columns:
+    product_id: UPC
+    name: DESCRIP
+    size: SIZE
+
+stores:
+  path: demo.dta
+  reader: stata
+  columns:
+    store_id: store
+    region: zone
+    income: income
+    educ: educ
+    ethnic: ethnic
+    hsizeavg: hsizeavg
+    age60: age60
+
+# OK = 0 marks a week the Kilts Center considers suspect. Manual: "We do not use flagged data".
+row_filters:
+  - "ok = 1"
+
+calendar:
+  kind: week_number
+  # Week 1 runs 09/14/89 to 09/20/89 (manual, week decode table).
+  week1_start: 1989-09-14
+
+sizes:
+  overrides:
+    # SIZE is "end" in the UPC file. Crispix was sold in a 12 oz box.
+    "3800003500": 12.0
+
+product_rules:
+  # UPC prefixes are manufacturer codes. 38281 is Dominick's own label ("DOM ..." descriptions).
+  manufacturer_prefixes:
+    "16000": General Mills
+    "38000": Kellogg's
+    "43000": Post
+    "30000": Quaker
+    "13130": Nabisco
+    "38281": Dominicks
+  private_label: "manufacturer = 'Dominicks'"
+
+store_rules:
+  # Price tier per store, from the store table in the data manual. Stores missing here have
+  # no tier in the manual.
+  segment_map:
+    "2": High
+    "4": Medium
+    "5": Medium
+    "9": Medium
+    "12": High
+    "14": High
+    "18": Low
+    "21": CubFighter
+    "28": Medium
+    "32": High
+    "33": High
+    "40": CubFighter
+    "44": Medium
+    "45": Medium
+    "46": Low
+    "47": Medium
+    "48": Medium
+    "49": Medium
+    "50": Medium
+    "51": Medium
+    "52": High
+    "53": High
+    "54": Medium
+    "56": Medium
+    "59": CubFighter
+    "62": High
+    "64": Medium
+    "65": Medium
+    "67": Low
+    "68": High
+    "70": CubFighter
+    "71": High
+    "72": High
+    "73": Low
+    "74": Medium
+    "75": High
+    "76": Medium
+    "77": CubFighter
+    "78": CubFighter
+    "80": CubFighter
+    "81": Medium
+    "83": CubFighter
+    "84": Medium
+    "86": Medium
+    "88": Medium
+    "89": Medium
+    "90": Medium
+    "91": Medium
+    "92": Medium
+    "93": High
+    "94": Low
+    "95": High
+    "97": High
+    "98": Medium
+    "100": High
+    "101": Medium
+    "103": Low
+    "104": High
+    "105": Medium
+    "106": High
+    "107": Medium
+    "109": High
+    "110": Medium
+    "111": High
+    "112": Low
+    "114": Medium
+    "115": Medium
+    "116": Medium
+    "118": Medium
+    "119": Medium
+    "121": Medium
+    "122": CubFighter
+    "123": High
+    "124": High
+    "126": Medium
+    "128": High
+  extra_columns: [income, educ, ethnic, hsizeavg, age60]
+
+# Dominick's reports no feature or display flags. The manual says SALE is not set
+# consistently, so price cuts without a code are caught by the depth rule in modeling.yaml.
+promo:
+  price_cut: "sale IN ('B', 'C', 'S')"
+
+selection:
+  # Weeks 192 to 399. The chain has no data for weeks 284-309.
+  last_weeks: 208
+  top_n_products: 25
+  private_label_top_n: 3
+  min_weeks_observed: 100
+
+cost:
+  # PROFIT is gross margin in percent on average acquisition cost (manual, part 4).
+  unit_cost_expr: "CASE WHEN profit > 0 AND profit < 100 THEN unit_price * (1 - profit / 100) END"

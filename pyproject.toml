@@ -10,6 +10,7 @@ dependencies = [
     "lightgbm",
     "matplotlib",
     "numpy",
+    "openpyxl>=3.1.5",
     "pandas",
     "pandera[polars]",
     "plotly",
@@ -27,6 +28,9 @@ dependencies = [
 [dependency-groups]
 dev = [
     "hypothesis",
+    "ipykernel>=7.4.0",
+    "nbclient>=0.11.0",
+    "nbformat>=5.11.1",
     "pre-commit",
     "pytest",
     "ruff",
@@ -46,7 +50,11 @@ extend-include = ["*.ipynb"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP", "SIM", "NPY", "PD"]
+# ruff format owns line length; long string literals are left alone.
+ignore = ["E501"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["."]
 addopts = "-ra --strict-markers"
+filterwarnings = ["ignore::DeprecationWarning:pymc.*"]

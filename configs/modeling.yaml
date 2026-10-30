@@ -1,19 +1,77 @@
-# Split dates are set in Phase 2, once both clients' date ranges are known.
+# Every constant the pipeline uses after onboarding. Same values for every client.
+
+onboarding:
+  # Regular price = max non-promo unit price over the trailing window (ADR 0002).
+  base_price_window_weeks: 8
+  # Inside a store-product's selling span, a run of more zero weeks than this means the
+  # product was off the shelf, not that nobody bought it.
+  max_zero_run_weeks: 8
+  # A price this far under the base price counts as a price cut even without a promo code.
+  price_cut_min_depth: 0.05
+  # Units above median + k * MAD for the store-product are flagged as outliers.
+  outlier_mad_k: 5.0
+
 split:
-  train_end: null
-  test_start: null
+  # The last holdout_weeks calendar weeks are never used for the final fit.
+  holdout_weeks: 52
+  # Models fit on at most this many weeks before the forecast origin.
+  train_window_weeks: 104
 
 backtest:
   horizon_weeks: 13
   step_weeks: 13
-  min_folds: 4
+  n_folds: 4
+  # Week-on-week change in unit price that counts as a price change for direction accuracy.
+  price_change_min: 0.02
+
+segmentation:
+  product_k_range: [3, 8]
+  store_k_range: [2, 6]
+  min_cluster_size: 2
+  seed: 7
+
+demand:
+  fourier_terms: 3
+  exclude_outliers_from_fit: true
+  naive_window_weeks: 4
+  hb_max_rows_per_product: 1500
+  hb_draws: 500
+  hb_tune: 500
+  hb_chains: 2
+  # Lags at least as long as the forecast horizon, so a 13-week forecast never needs actuals
+  # from inside the horizon.
+  gbm_lag_weeks: [13, 26, 52]
+  gbm_rounds: 400
+  gbm_learning_rate: 0.05
+  gbm_num_leaves: 31
+  elasticity_perturbation: 0.05
+  seed: 7
 
 plausibility:
-  # Own-price elasticity range a product's estimate must fall in to be used for pricing advice.
   own_elasticity_min: -5.0
   own_elasticity_max: -0.5
 
+choice:
+  # Market size per store-week = this multiple of the store's peak weekly category units in
+  # training (ADR 0006).
+  market_peak_multiple: 2.0
+  shoppers_per_cluster: 10000
+  # Shopper price sensitivity sd as a share of |alpha_cluster|.
+  alpha_sd_ratio: 0.3
+  seed: 7
+
 optimizer:
   max_price_change: 0.10
-  price_ending: 0.09
-  max_category_volume_drop: null
+  # Prices end in .x9
+  price_ending_cents: 9
+  max_category_volume_drop: 0.03
+  max_passes: 6
+  # Revenue alone rewards cutting every price (see ADR 0006), so margin is the default.
+  objective: margin
+
+promo_scenarios:
+  - {name: "20% price cut", price_cut: 0.20}
+  - {name: "feature only", feature: true}
+  - {name: "display only", display: true}
+  - {name: "feature + display + 10% cut", price_cut: 0.10, feature: true, display: true}
+  - {name: "10% price cut", price_cut: 0.10}
