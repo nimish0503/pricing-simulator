@@ -1,0 +1,14 @@
+{
+ "client_id": "client_a",
+ "display_name": "dunnhumby Breakfast at the Frat (cold cereal)",
+ "first_week": "2009-01-08",
+ "last_week": "2011-12-29",
+ "stores": 77,
+ "products": 15,
+ "weeks": 156,
+ "rows": 171009,
+ "zero_sales_share": 0.0077305872790320975,
+ "outlier_share": 0.006841745171306773,
+ "has_feature": true,
+ "has_display": true
+}

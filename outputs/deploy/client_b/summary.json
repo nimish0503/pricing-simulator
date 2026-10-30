@@ -9,6 +9,6 @@
  "rows": 404447,
  "zero_sales_share": 0.0056373270168897285,
  "outlier_share": 0.01297821469809394,
- "has_feature": true,
- "has_display": true
+ "has_feature": false,
+ "has_display": false
 }

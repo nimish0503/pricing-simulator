@@ -1,0 +1,266 @@
+{
+ "revenue": {
+  "status": "optimal",
+  "method": "grid search",
+  "current_weekly_value": 87970.5522402431,
+  "optimized_weekly_value": 91792.64232537604,
+  "weekly_gain": 3822.0900851329498,
+  "gain_pct": 0.04344738083142887,
+  "current_weekly_units": 28595.050115625283,
+  "optimized_weekly_units": 31855.953034073544,
+  "wape": 0.1451596588840036,
+  "error_band_weekly": 13324.588648012937,
+  "binding": [
+   "PL HONEY NUT TOASTD OATS 12.25 oz at the top of its band (1.99)",
+   "PL RAISIN BRAN 20 oz at the top of its band (1.99)",
+   "PL BT SZ FRSTD SHRD WHT 18 oz at the bottom of its band (2.29)",
+   "GM HONEY NUT CHEERIOS 12.25 oz at the bottom of its band (2.79)",
+   "GM CHEERIOS 18 oz at the bottom of its band (4.19)",
+   "GM CHEERIOS 12 oz at the bottom of its band (2.89)",
+   "QKER LIFE ORIGINAL 13 oz at the bottom of its band (2.69)",
+   "QKER CAP N CRUNCH BERRIES 13 oz at the bottom of its band (2.69)",
+   "QKER CAP N CRUNCH 14 oz at the bottom of its band (2.69)",
+   "KELL BITE SIZE MINI WHEAT 18 oz at the bottom of its band (3.09)",
+   "KELL FROSTED FLAKES 15 oz at the bottom of its band (3.09)",
+   "KELL FROOT LOOPS 12.2 oz at the bottom of its band (3.09)",
+   "POST HNY BN OTS HNY RSTD 18 oz at the bottom of its band (3.09)",
+   "POST FM SZ HNYBNCH OT ALM 18 oz at the bottom of its band (3.09)",
+   "POST FRUITY PEBBLES 11 oz at the bottom of its band (2.79)"
+  ],
+  "broken_today": [],
+  "prices": [
+   {
+    "product_id": "1111085319",
+    "name": "PL HONEY NUT TOASTD OATS",
+    "size_oz": 12.25,
+    "current": 1.89,
+    "recommended": 1.99
+   },
+   {
+    "product_id": "1111085345",
+    "name": "PL RAISIN BRAN",
+    "size_oz": 20.0,
+    "current": 1.88,
+    "recommended": 1.99
+   },
+   {
+    "product_id": "1111085350",
+    "name": "PL BT SZ FRSTD SHRD WHT",
+    "size_oz": 18.0,
+    "current": 2.4450000000000003,
+    "recommended": 2.29
+   },
+   {
+    "product_id": "1600027527",
+    "name": "GM HONEY NUT CHEERIOS",
+    "size_oz": 12.25,
+    "current": 3.07,
+    "recommended": 2.79
+   },
+   {
+    "product_id": "1600027528",
+    "name": "GM CHEERIOS",
+    "size_oz": 18.0,
+    "current": 4.59,
+    "recommended": 4.19
+   },
+   {
+    "product_id": "1600027564",
+    "name": "GM CHEERIOS",
+    "size_oz": 12.0,
+    "current": 3.19,
+    "recommended": 2.89
+   },
+   {
+    "product_id": "3000006340",
+    "name": "QKER LIFE ORIGINAL",
+    "size_oz": 13.0,
+    "current": 2.95,
+    "recommended": 2.69
+   },
+   {
+    "product_id": "3000006560",
+    "name": "QKER CAP N CRUNCH BERRIES",
+    "size_oz": 13.0,
+    "current": 2.95,
+    "recommended": 2.69
+   },
+   {
+    "product_id": "3000006610",
+    "name": "QKER CAP N CRUNCH",
+    "size_oz": 14.0,
+    "current": 2.95,
+    "recommended": 2.69
+   },
+   {
+    "product_id": "3800031829",
+    "name": "KELL BITE SIZE MINI WHEAT",
+    "size_oz": 18.0,
+    "current": 3.36,
+    "recommended": 3.09
+   },
+   {
+    "product_id": "3800031838",
+    "name": "KELL FROSTED FLAKES",
+    "size_oz": 15.0,
+    "current": 3.38,
+    "recommended": 3.09
+   },
+   {
+    "product_id": "3800039118",
+    "name": "KELL FROOT LOOPS",
+    "size_oz": 12.2,
+    "current": 3.38,
+    "recommended": 3.09
+   },
+   {
+    "product_id": "88491201426",
+    "name": "POST HNY BN OTS HNY RSTD",
+    "size_oz": 18.0,
+    "current": 3.37,
+    "recommended": 3.09
+   },
+   {
+    "product_id": "88491201427",
+    "name": "POST FM SZ HNYBNCH OT ALM",
+    "size_oz": 18.0,
+    "current": 3.37,
+    "recommended": 3.09
+   },
+   {
+    "product_id": "88491212971",
+    "name": "POST FRUITY PEBBLES",
+    "size_oz": 11.0,
+    "current": 2.99,
+    "recommended": 2.79
+   }
+  ]
+ },
+ "margin": {
+  "status": "optimal",
+  "method": "grid search",
+  "current_weekly_value": 17590.09827287122,
+  "optimized_weekly_value": 18698.380902088138,
+  "weekly_gain": 1108.2826292169193,
+  "gain_pct": 0.0630060510194077,
+  "current_weekly_units": 28595.050115625283,
+  "optimized_weekly_units": 27761.19803780013,
+  "wape": 0.1451596588840036,
+  "error_band_weekly": 2714.2505934302812,
+  "binding": [
+   "PL HONEY NUT TOASTD OATS 12.25 oz at the top of its band (1.99)",
+   "PL RAISIN BRAN 20 oz at the top of its band (1.99)",
+   "PL BT SZ FRSTD SHRD WHT 18 oz at the top of its band (2.59)",
+   "category volume at its floor (3% below today)"
+  ],
+  "broken_today": [],
+  "prices": [
+   {
+    "product_id": "1111085319",
+    "name": "PL HONEY NUT TOASTD OATS",
+    "size_oz": 12.25,
+    "current": 1.89,
+    "recommended": 1.99
+   },
+   {
+    "product_id": "1111085345",
+    "name": "PL RAISIN BRAN",
+    "size_oz": 20.0,
+    "current": 1.88,
+    "recommended": 1.99
+   },
+   {
+    "product_id": "1111085350",
+    "name": "PL BT SZ FRSTD SHRD WHT",
+    "size_oz": 18.0,
+    "current": 2.4450000000000003,
+    "recommended": 2.59
+   },
+   {
+    "product_id": "1600027527",
+    "name": "GM HONEY NUT CHEERIOS",
+    "size_oz": 12.25,
+    "current": 3.07,
+    "recommended": 3.19
+   },
+   {
+    "product_id": "1600027528",
+    "name": "GM CHEERIOS",
+    "size_oz": 18.0,
+    "current": 4.59,
+    "recommended": 4.69
+   },
+   {
+    "product_id": "1600027564",
+    "name": "GM CHEERIOS",
+    "size_oz": 12.0,
+    "current": 3.19,
+    "recommended": 3.19
+   },
+   {
+    "product_id": "3000006340",
+    "name": "QKER LIFE ORIGINAL",
+    "size_oz": 13.0,
+    "current": 2.95,
+    "recommended": 3.09
+   },
+   {
+    "product_id": "3000006560",
+    "name": "QKER CAP N CRUNCH BERRIES",
+    "size_oz": 13.0,
+    "current": 2.95,
+    "recommended": 2.99
+   },
+   {
+    "product_id": "3000006610",
+    "name": "QKER CAP N CRUNCH",
+    "size_oz": 14.0,
+    "current": 2.95,
+    "recommended": 2.99
+   },
+   {
+    "product_id": "3800031829",
+    "name": "KELL BITE SIZE MINI WHEAT",
+    "size_oz": 18.0,
+    "current": 3.36,
+    "recommended": 3.39
+   },
+   {
+    "product_id": "3800031838",
+    "name": "KELL FROSTED FLAKES",
+    "size_oz": 15.0,
+    "current": 3.38,
+    "recommended": 3.39
+   },
+   {
+    "product_id": "3800039118",
+    "name": "KELL FROOT LOOPS",
+    "size_oz": 12.2,
+    "current": 3.38,
+    "recommended": 3.39
+   },
+   {
+    "product_id": "88491201426",
+    "name": "POST HNY BN OTS HNY RSTD",
+    "size_oz": 18.0,
+    "current": 3.37,
+    "recommended": 3.39
+   },
+   {
+    "product_id": "88491201427",
+    "name": "POST FM SZ HNYBNCH OT ALM",
+    "size_oz": 18.0,
+    "current": 3.37,
+    "recommended": 3.39
+   },
+   {
+    "product_id": "88491212971",
+    "name": "POST FRUITY PEBBLES",
+    "size_oz": 11.0,
+    "current": 2.99,
+    "recommended": 2.99
+   }
+  ]
+ },
+ "default_objective": "margin"
+}

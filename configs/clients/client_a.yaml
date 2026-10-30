@@ -1,6 +1,6 @@
 # Client A: dunnhumby "Breakfast at the Frat", cold cereal category.
-# Column and sheet names follow the dunnhumby user guide for this dataset. They have not been
-# checked against the real download yet: the raw file isn't in data/raw/client_a.
+# Sheet and column names checked against the download (dunnhumby - Breakfast at the Frat.xlsx).
+# The category has 15 cereal products (3 private label) in 79 stores, so the selection keeps them all.
 client_id: client_a
 display_name: "dunnhumby Breakfast at the Frat (cold cereal)"
 raw_dir: data/raw/client_a

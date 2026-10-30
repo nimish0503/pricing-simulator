@@ -64,8 +64,8 @@ def export(cfg: ClientConfig) -> None:
                 "rows": sales.height,
                 "zero_sales_share": float((sales["row_status"] == "zero_sales").mean()),
                 "outlier_share": float(sales["is_outlier"].mean()),
-                "has_feature": bool(sales["on_feature"].null_count() < sales.height),
-                "has_display": bool(sales["on_display"].null_count() < sales.height),
+                "has_feature": bool(sales["on_feature"].any()),
+                "has_display": bool(sales["on_display"].any()),
             },
             indent=1,
         )
