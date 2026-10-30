@@ -1,0 +1,19 @@
+# Split dates are set in Phase 2, once both clients' date ranges are known.
+split:
+  train_end: null
+  test_start: null
+
+backtest:
+  horizon_weeks: 13
+  step_weeks: 13
+  min_folds: 4
+
+plausibility:
+  # Own-price elasticity range a product's estimate must fall in to be used for pricing advice.
+  own_elasticity_min: -5.0
+  own_elasticity_max: -0.5
+
+optimizer:
+  max_price_change: 0.10
+  price_ending: 0.09
+  max_category_volume_drop: null
