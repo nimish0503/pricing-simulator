@@ -54,6 +54,14 @@ GLOSSARY = {
     "Shoppers mostly switch within a cluster.",
 }
 
+PROMOS = {
+    "10% price cut": "10% off",
+    "20% price cut": "20% off",
+    "feature only": "Weekly ad",
+    "display only": "In-store display",
+    "feature + display + 10% cut": "Ad + display + 10% off",
+}
+
 CSS = """
 <style>
 .block-container { padding-top: 4rem; max-width: 1280px; }
@@ -85,6 +93,8 @@ h2 { margin-top: .8rem; }
   border-radius: 50%; background: #2563EB; color: #fff; font-weight: 700; font-size: .85rem;
   margin-right: 8px;
 }
+.question { font-size: .8rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; opacity: .7; }
+.answer { font-size: 1.2rem; font-weight: 650; line-height: 1.35; margin: .25rem 0 .4rem; }
 .card-title { font-weight: 600; font-size: 1.05rem; line-height: 1.35; margin: .2rem 0 .3rem; }
 @media (prefers-reduced-motion: no-preference) {
   .hero { animation: rise .4s ease-out both; }
@@ -106,7 +116,7 @@ def pick_client() -> str:
     if not options:
         st.error("No client outputs in outputs/deploy/. Run `make report CLIENT=...` first.")
         st.stop()
-    return st.sidebar.radio("Retailer", list(options), format_func=options.get, key="client")
+    return st.sidebar.radio("Store chain", list(options), format_func=options.get, key="client")
 
 
 def current_client() -> str:
@@ -131,8 +141,46 @@ def simulator(client: str) -> Simulator:
     return Simulator.from_dict(document(client, "simulator.json"))
 
 
+# Scanner names are cut to 20-odd characters. Spell out the ones a shopper wouldn't recognise.
+READABLE = {
+    "PL HONEY NUT TOASTD OATS": "Store brand Honey Nut Toasted Oats",
+    "PL RAISIN BRAN": "Store brand Raisin Bran",
+    "PL BT SZ FRSTD SHRD WHT": "Store brand Frosted Shredded Wheat",
+    "QKER LIFE ORIGINAL": "Quaker Life",
+    "QKER CAP N CRUNCH BERRIES": "Cap'n Crunch's Crunch Berries",
+    "QKER CAP N CRUNCH": "Cap'n Crunch",
+    "KELL BITE SIZE MINI WHEAT": "Frosted Mini-Wheats Bite Size",
+    "KELL FROSTED FLAKES": "Frosted Flakes",
+    "KELL FROOT LOOPS": "Froot Loops",
+    "GM HONEY NUT CHEERIOS": "Honey Nut Cheerios",
+    "GM CHEERIOS": "Cheerios",
+    "POST HNY BN OTS HNY RSTD": "Honey Bunches of Oats Honey Roasted",
+    "POST FM SZ HNYBNCH OT ALM": "Honey Bunches of Oats Almonds, family size",
+    "CAPN CRUNCH CEREAL": "Cap'n Crunch",
+    "KELLOGG'S RAISIN BRA": "Kellogg's Raisin Bran",
+    "KELLOGG'S FROSTED FL": "Frosted Flakes",
+    "KELLOGGS FRUIT LOOPS": "Froot Loops",
+    "BITE SIZE FRSTD MINI": "Frosted Mini-Wheats Bite Size",
+    "KELL FROST MINI WHTS": "Frosted Mini-Wheats",
+    "KELLOGGS RICE KRISPI": "Rice Krispies",
+    "DOM FROSTED FLAKES": "Store brand Frosted Flakes",
+    "DOM RAISIN BRAN": "Store brand Raisin Bran",
+    "DOM CORN FLAKES": "Store brand Corn Flakes",
+    "POST GRAPE-NUTS CERE": "Grape-Nuts",
+}
+MAKERS = {
+    "Private Label": "Store brand",
+    "Dominicks": "Store brand",
+    "General Mi": "General Mills",
+    "Kellogg": "Kellogg's",
+    "Post Foods": "Post",
+}
+
+
 def label(name: str, size: float) -> str:
-    # Raw names are upper case with two-letter abbreviations (PL, GM, BT) that title() would mangle.
+    if name in READABLE:
+        return f"{READABLE[name]} {size:g} oz"
+    # Raw names are upper case with two-letter abbreviations (BT, SZ) that title() would mangle.
     words = [w if len(w) <= 2 and w != "N" else w[0] + w[1:].lower() for w in name.split()]
     return f"{' '.join(words)} {size:g} oz"
 
@@ -146,15 +194,16 @@ def with_label(frame: pl.DataFrame) -> pl.DataFrame:
 
 
 def maker(name: str | None) -> str:
-    return (name or "Unknown").title()
+    name = (name or "Unknown").title()
+    return MAKERS.get(name, name)
 
 
 @st.cache_data
 def maker_colors(client: str) -> dict[str, str]:
     names = sorted({maker(m) for m in table(client, "product_clusters.csv")["manufacturer"]})
-    national = [n for n in names if n != "Private Label"]
+    national = [n for n in names if n != "Store brand"]
     colors = dict(zip(national, MAKER_PALETTE * 3, strict=False))
-    colors["Private Label"] = SLATE
+    colors["Store brand"] = SLATE
     return colors
 
 

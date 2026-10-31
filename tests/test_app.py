@@ -7,12 +7,13 @@ from shelfsim.deploy import DEPLOY_DIR
 
 APP = Path(__file__).parents[1] / "app" / "streamlit_app.py"
 PAGES = [
-    "views/overview.py",
-    "views/product.py",
+    "views/home.py",
+    "views/prices.py",
+    "views/promos.py",
+    "views/try_price.py",
+    "views/simulator.py",
     "views/elasticities.py",
     "views/compare.py",
-    "views/simulator.py",
-    "views/optimizer.py",
 ]
 
 pytestmark = pytest.mark.skipif(

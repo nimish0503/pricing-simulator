@@ -11,6 +11,7 @@ from shared import (
     document,
     glossary,
     header,
+    maker,
     maker_colors,
     money,
     plot,
@@ -24,14 +25,14 @@ client = current_client()
 sim = simulator(client)
 summary = document(client, "summary.json")
 header(
-    "What if we change prices?",
+    "Scenario builder",
     "Start from a preset or edit the price list directly, then see the weekly effect on the "
     "whole category, where the volume moves and how the shelf's price ladder changes. Save "
     "scenarios to compare them side by side.",
 )
 
 products = with_label(sim.products).with_columns(
-    maker=pl.col("manufacturer").fill_null("Unknown").str.to_titlecase(),
+    maker=pl.col("manufacturer").map_elements(maker, return_dtype=pl.String),
     base_units=pl.Series(sim.run(Scenario.empty())["products"]["base_units"]),
 )
 recommended = {

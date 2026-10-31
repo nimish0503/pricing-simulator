@@ -11,23 +11,18 @@ st.logo(str(STATIC / "logo.svg"), icon_image=str(STATIC / "mark.svg"), size="lar
 
 page = st.navigation(
     {
-        "Understand": [
-            st.Page(
-                "views/overview.py", title="Briefing", icon=":material/summarize:", default=True
-            ),
-            st.Page(
-                "views/product.py", title="Product deep-dive", icon=":material/search_insights:"
-            ),
+        "Start here": [
+            st.Page("views/home.py", title="Summary", icon=":material/home:", default=True),
+            st.Page("views/prices.py", title="New price list", icon=":material/sell:"),
+            st.Page("views/promos.py", title="Promotions", icon=":material/campaign:"),
+            st.Page("views/try_price.py", title="Try a price", icon=":material/tune:"),
+        ],
+        "For analysts": [
+            st.Page("views/simulator.py", title="Scenario builder", icon=":material/table_edit:"),
             st.Page(
                 "views/elasticities.py", title="Price sensitivity", icon=":material/trending_down:"
             ),
-            st.Page(
-                "views/compare.py", title="Compare retailers", icon=":material/compare_arrows:"
-            ),
-        ],
-        "Decide": [
-            st.Page("views/simulator.py", title="What-if", icon=":material/tune:"),
-            st.Page("views/optimizer.py", title="Recommendations", icon=":material/price_check:"),
+            st.Page("views/compare.py", title="Compare chains", icon=":material/compare_arrows:"),
         ],
     }
 )
@@ -35,11 +30,8 @@ page = st.navigation(
 client = pick_client()
 summary = document(client, "summary.json")
 st.sidebar.caption(
-    f"{summary['stores']} stores · {summary['products']} products · {summary['weeks']} weeks, "
-    f"{summary['first_week'][:4]} to {summary['last_week'][:4]}"
-)
-st.sidebar.caption(
-    "Built on public scanner data (Dominick's Finer Foods, dunnhumby). "
-    "Not affiliated with either retailer or any pricing vendor."
+    f"{summary['stores']} stores, {summary['products']} cereals, "
+    f"{summary['first_week'][:4]} to {summary['last_week'][:4]}. "
+    "Built on public sales data; not affiliated with either chain."
 )
 page.run()
