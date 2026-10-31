@@ -2,9 +2,9 @@
 
 Onboards retailers' weekly scanner data into one canonical schema, estimates price elasticities five ways, simulates shoppers choosing between products, and recommends prices and promos under business rules. Built on public data (Dominick's Finer Foods and dunnhumby). It's my own take on retail pricing analytics, not a copy of any vendor's method.
 
-Demo: TODO (link once deployed)
+Live demo: https://pricing-simulator-cerials.streamlit.app
 
-TODO: GIF of the scenario simulator
+![Summary page of the app](docs/img/summary.png)
 
 ## Backtest results
 
