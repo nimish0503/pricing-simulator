@@ -24,7 +24,6 @@ dunnhumby Breakfast at the Frat (cold cereal), same setup, held-out weeks starti
 
 | Model | Client | WAPE all | WAPE promo | WAPE chain-week | Bias | MASE | Direction accuracy | Promo-lift calibration | Elasticity sd across folds | Plausibility |
 |---|---|---|---|---|---|---|---|---|---|---|
-| Model | Client | WAPE all | WAPE promo | WAPE chain-week | Bias | MASE | Direction accuracy | Promo-lift calibration | Elasticity sd across folds | Plausibility |
 | M0 naive | client_a | 42.3% | 58.6% | 24.1% | -22.3% | 1.00 | n/a | n/a | n/a | n/a |
 | M1 log-log | client_a | 32.5% | 35.5% | 8.7% | -0.6% | 0.77 | 68.4% | 1.07 | 0.36 | 85.0% |
 | M2 cross-price | client_a | 33.4% | 37.4% | 10.2% | 0.6% | 0.79 | 68.6% | 1.12 | 0.33 | 90.0% |
@@ -67,9 +66,23 @@ Everything after the canonical tables runs the same for every client. A new clie
 
 What the raw files turned out to contain, and where they differ from what I expected: [docs/datasets.md](docs/datasets.md).
 
+## What I found
+
+1. **Plain price cuts lose money; ads and displays pay.** On dunnhumby, a one-week 10% cut loses about $505 of category margin on average and a 20% cut about $1,319, because most of the extra boxes come from shoppers who would have bought cereal anyway. A week in the ad adds about $654 and an in-store display about $669. On Dominick's, which records no ads or displays, both cut depths lose money for 25 of 28 products.
+2. **Store brands are the least price-sensitive products, which I didn't expect.** On dunnhumby the median store-brand elasticity is -0.44 against -1.51 for national brands, so the three store-brand cereals get the biggest recommended rises (+5% to +6%). The likely reason is that store-brand buyers have already picked the cheapest option and have nowhere cheaper to go. On Dominick's the two tiers come out the same (about -2.6).
+3. **The best forecaster is the worst pricing model.** LightGBM has the lowest error on Dominick's (23% chain-week WAPE against 33% for the hierarchical model), but only 2.7% of its elasticities land in the plausible range: it predicts sales from seasonality and history and barely reacts to price. The hierarchical Bayes model forecasts slightly worse and gives stable, plausible elasticities, so it's the one the optimizer uses (ADR 0003).
+
+Across both chains shoppers react about 1.7x more to a temporary promo than to the same permanent price change. Judging a permanent price cut by promo results would overstate its volume.
+
 ## What didn't work
 
-TODO (yours)
+- **The price gain can't be proven from the data.** The optimizer adds about $1,108 of weekly margin on dunnhumby (+6.3%) and $2,843 on Dominick's (+5.5%), but the backtest error band is ±$2,714 and ±$16,240 a week. The gain is inside the noise, so the honest recommendation is a store trial, not a rollout.
+- **Maximizing revenue gave a useless answer.** It cut nearly every price to the bottom of the allowed range, because the choice model treats shoppers who leave the category as easy to win back. The optimizer now maximizes margin by default (ADR 0006).
+- **The size of the "skip cereal" group is an assumption.** In the simulator most shoppers lost to a price rise leave the category instead of switching brand. That share depends on the market size I chose (ADR 0006), and a different choice would change the switching picture.
+- **The nested logit's cross-elasticities were useless for one chart.** Within a nest every product gets the same cross-elasticity, so a "who gains when this product gets dearer" chart showed an identical number for every product. I replaced it with switching numbers from running the simulator.
+- **dunnhumby has no cost data.** Margins there are assumed by brand tier (17.5% national, 35.5% store brand, ADR 0005), so its margin figures are less reliable than Dominick's.
+- **A data-availability bug.** The app first marked ads and displays as available for Dominick's because the check counted non-null values instead of true ones. Dominick's records no ads or displays at all. It's fixed, and the promo planner now skips mechanics a client can't measure.
+- **The first versions of the app were too technical.** Elasticities and error metrics up front confused anyone outside analytics, so the main pages now answer plain questions and the statistics sit in a separate analysts section.
 
 ## Run it locally
 

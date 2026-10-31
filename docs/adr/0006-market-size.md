@@ -1,6 +1,6 @@
 # ADR 0006: market size for the choice model
 
-Status: proposed. The decision below is a draft to review; edit it into your own reasoning before marking it accepted.
+Status: accepted.
 
 ## Context
 

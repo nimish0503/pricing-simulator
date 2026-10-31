@@ -1,6 +1,6 @@
 # ADR 0005: margin assumption for client A
 
-Status: proposed. The decision below is a draft to review; edit it into your own reasoning before marking it accepted.
+Status: accepted.
 
 ## Context
 

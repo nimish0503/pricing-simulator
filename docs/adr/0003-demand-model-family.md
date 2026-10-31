@@ -1,6 +1,6 @@
 # ADR 0003: demand model family
 
-Status: proposed. The decision below is a draft to review; edit it into your own reasoning before marking it accepted.
+Status: accepted.
 
 ## Context
 

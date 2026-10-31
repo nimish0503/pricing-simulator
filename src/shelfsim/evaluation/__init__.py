@@ -83,6 +83,6 @@ def _update_comparison() -> None:
             "forecast moved units the same way as the actuals; promo-lift calibration = predicted / actual incremental units in promo weeks vs M0; "
             "elasticity sd = median over products of the sd of the own-price elasticity across folds; plausibility = share of product-fold "
             "elasticities between the configured bounds.\n\n"
-            f"{block}\n\n## Findings\n\nTODO (yours): three findings, including one that surprised you.\n"
+            f'{block}\n\n## Findings\n\nSee "What I found" in the README.\n'
         )
     path.write_text(text)

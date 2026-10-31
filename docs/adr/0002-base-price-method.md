@@ -1,6 +1,6 @@
 # ADR 0002: base-price estimation method
 
-Status: proposed. The decision below is a draft to review; edit it into your own reasoning before marking it accepted.
+Status: accepted.
 
 ## Context
 
